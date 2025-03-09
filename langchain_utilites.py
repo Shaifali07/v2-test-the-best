@@ -14,6 +14,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 
 from langchain_core.prompts import MessagesPlaceholder
 from langchain.chains import create_history_aware_retriever
+
 chat_history = []
 contextualize_system_prompt = ("Given chat history and the latest user question"
                                "You need to refine the question bank as per the requirment of the user. "
@@ -23,6 +24,7 @@ contextualize_prompt = ChatPromptTemplate.from_messages([
     MessagesPlaceholder("chat_history"),
     ("human", "{input}")
 ])
+
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 qa_prompt=ChatPromptTemplate.from_messages(

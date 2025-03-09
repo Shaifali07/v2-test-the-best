@@ -11,27 +11,19 @@ text_splitter=RecursiveCharacterTextSplitter(
 embedding_function=HuggingFaceEmbeddings()
 persist_directory=r"db"
 vector_store = Chroma(persist_directory=persist_directory, embedding_function=embedding_function)
-def load_documents():
-    loader = DirectoryLoader(os.getcwd() + '/papers', glob="**/*.docx")
+def load_documents(directory_path):
+    loader = DirectoryLoader(directory_path, glob="**/*.docx")
     total_docs=len(loader.load())
     splits = loader.load_and_split(text_splitter=text_splitter)
     return splits,total_docs
 
-def index_document_to_Chroma():
+def index_document_to_Chroma(directory_path):
     try:
-        splits,total_docs = load_documents()
+        splits,total_docs = load_documents(directory_path)
         vector_store.add_documents(splits)
         return True
     except Exception as e:
         print(f"Error indexing document: {e}")
         return False
-    # splits,total_docs=load_documents()
-    # # document_embedings=embedings.embed_documents([split.page_content for split in splits])
-    # vectorstore.add_documents(splits)
-    # # vector_store=Chroma.from_documents(
-    # #     documents=splits,
-    # #     embedding=embedings,
-    # #     persist_directory=persist_directory
-    # # )
-    # return vector_store,total_docs
+    
 
